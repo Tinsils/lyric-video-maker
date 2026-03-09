@@ -135,8 +135,8 @@ def create_video(width, height, filename):
         font_size = 70
         wrap_chars = 45
     else:
-        max_text_width = 700
-        font_size = 50
+        max_text_width = 900
+        font_size = 65
         wrap_chars = 20
 
     for start, end, text in subtitles:
