@@ -6,10 +6,14 @@ import math
 import os
 
 
-def pick_file(title, types):
+BASE_DIR     = r"C:\Users\Henry\Documents\Youtube Accounts\Song Lyrics For You"
+DEFAULT_IMG  = r"C:\Users\Henry\Documents\Youtube Accounts\Song Lyrics For You\.Defaults"
+
+
+def pick_file(title, types, initialdir=None):
     root = tk.Tk()
     root.withdraw()
-    path = filedialog.askopenfilename(title=title, filetypes=types)
+    path = filedialog.askopenfilename(title=title, filetypes=types, initialdir=initialdir)
     root.destroy()
     return path
 
@@ -112,9 +116,9 @@ def create_video(width, height, filename, subtitles, test_mode=False):
 
     if not is_portrait:
         font_size          = 90
-        wrap_chars         = 22
+        wrap_chars         = 42
         # Width the text occupies at V_REST (100%) scale
-        rest_w             = int((width - 2 * EDGE_BUFFER) * 0.65)
+        rest_w             = int((width - 2 * EDGE_BUFFER) * 0.95)
         stroke_width       = 4
         prefer_single_line = False
     else:
@@ -230,17 +234,20 @@ def create_video(width, height, filename, subtitles, test_mode=False):
 # ---------------------------------------------------------------------------
 
 print("Select audio file (.mp3 / .wav)")
-audio_path = pick_file("Audio", [("Audio", "*.mp3 *.wav")])
+audio_path = pick_file("Audio", [("Audio", "*.mp3 *.wav")], initialdir=BASE_DIR)
 if not audio_path:
     raise SystemExit("No audio file selected.")
 
+# Use the folder of the selected audio file for the .srt picker
+audio_dir = os.path.dirname(audio_path)
+
 print("Select subtitle file (.srt)")
-srt_path = pick_file("Subtitles", [("Subtitles", "*.srt")])
+srt_path = pick_file("Subtitles", [("Subtitles", "*.srt")], initialdir=audio_dir)
 if not srt_path:
     raise SystemExit("No subtitle file selected.")
 
 print("Select background image")
-image_path = pick_file("Image", [("Images", "*.png *.jpg *.jpeg")])
+image_path = pick_file("Image", [("Images", "*.png *.jpg *.jpeg")], initialdir=DEFAULT_IMG)
 if not image_path:
     raise SystemExit("No image selected.")
 
